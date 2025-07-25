@@ -1,30 +1,38 @@
-# Facebook Fanpage Streaming Order
+# Facebook Fanpage Streaming Order Platform
 
 Stream and track order data from Facebook fanpages in real-time using AWS services for efficient processing and storage. This project integrates Facebook's Webhook, AWS API Gateway, Lambda, Kinesis, SQS, and S3.
 
-## Architecture Overview
+---
 
 ### **Main Architecture**
+![Scaling Data Architecture](streaming_architecture.png)
 
-The order data flows through the following sequence:
+1. **Facebook Messenger Webhook 💬**
+   Captures real-time events from Facebook Fanpage Messenger using the Facebook Graph API.
 
-1. **Facebook Webhook** 🦸‍♂️
-   Receives events from Facebook fanpages (e.g., new order events).
+2. **Amazon API Gateway 🌐**
+   Serves as the entry point for webhook events from Facebook, providing a secure and scalable endpoint.
 
-2. **AWS API Gateway** 🌐
-   Exposes an endpoint to receive incoming data from the Facebook Webhook.
+3. **AWS Lambda (Webhook Handler) ⚙️**
+   Processes and transforms incoming events before forwarding them to the streaming service.
 
-3. **AWS Lambda (Webhook and PUT Data)** 🔧
-   Processes the incoming data, formats it, and pushes it to the next service.
+4. **Amazon Kinesis Data Streams 🔄**
+   Stores streaming data temporarily to ensure reliable and ordered message processing.
 
-4. **Kinesis Streaming** 📡
-   Streams the order data in real-time for further processing.
+5. **Amazon Kinesis Data Firehose 🔥**
+   Automatically delivers streaming data to destination services like S3 and Lambda for further processing.
 
-5. **Kinesis Firehose + AWS Lambda (for Processing)** 🔥💻
-   Firehose delivers the stream to storage. Lambda processes and transforms the data before saving it.
+6. **AWS Lambda (Processor) 🧠**
+   Performs additional logic or transformation before inserting the data into the destination.
 
-6. **S3** 🗄️
-   Stores the processed data in Amazon S3 for long-term storage and future analysis.
+7. **S3 + Supabase 📦⚡**
+   S3 stores raw and processed data for analytics; Supabase enables fast querying and dashboard integration.
+
+8. **Grafana 📊**
+   Visualizes data from Supabase or S3, enabling real-time monitoring and insights.
+
+9. **AWS IAM Identity Center 🔐**
+   Handles authentication and access control across the entire pipeline.
 
 ---
 
@@ -32,23 +40,33 @@ The order data flows through the following sequence:
 
 In the initial stage, replace Kinesis Streaming and Firehose with AWS SQS for message queuing and AWS Lambda for processing:
 
-1. **Facebook Webhook** 🦸‍♂️
-   Same as above.
+![Low-cost Architecture](alternative_streaming_architecture.png)
 
-2. **AWS API Gateway** 🌐
-   Same as above.
+The order data flows through the following sequence:
 
-3. **AWS Lambda (Webhook and PUT Data)** 🔧
-   Same as above.
+1. **Facebook Messenger Webhook 💬**
+   Receives messages or events from Facebook Fanpage Messenger using the Facebook Graph API.
 
-4. **AWS SQS** 📬
-   Queues the data for processing instead of using Kinesis Streaming.
+2. **Amazon API Gateway 🌐**
+   Exposes a secure HTTP endpoint to receive webhook data from Facebook.
 
-5. **AWS Lambda (Processing)** 🧠
-   Processes the queued data.
+3. **AWS Lambda (Webhook Handler) ⚙️**
+   Processes and validates the webhook payload and forwards it to the message queue.
 
-6. **S3** 🗄️
-   Stores the processed data in Amazon S3 for long-term storage and analysis.
+4. **Amazon SQS 📩**
+   Acts as a buffer and decouples ingestion from processing by queuing the incoming messages.
+
+5. **AWS Lambda (Processor) 🧠**
+   Consumes messages from SQS, transforms the data, and routes it to appropriate storage destinations.
+
+6. **S3 + Supabase 📦⚡**
+   Stores processed data: S3 for raw/archive data and Supabase for structured querying and analysis.
+
+7. **Grafana 📊**
+   Visualizes and monitors the data for insights and reporting.
+
+8. **AWS IAM Identity Center 🔐**
+   Manages authentication and authorization across all integrated AWS services.
 
 ---
 
