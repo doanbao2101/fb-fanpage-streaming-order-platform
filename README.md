@@ -5,6 +5,8 @@ Stream and track order data from Facebook fanpages in real-time using AWS servic
 ---
 ###  **Problems**
 
+![Problem](problem.png)
+
 The restaurant faces significant inefficiencies in its order management process:
 
 1. **Customer Communication Burden** – Staff must be online 24/7 on the Facebook Fanpage Messenger to respond to customer inquiries, which is resource-intensive and difficult to maintain.
