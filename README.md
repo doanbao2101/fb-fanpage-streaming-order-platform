@@ -3,6 +3,20 @@
 Stream and track order data from Facebook fanpages in real-time using AWS services for efficient processing and storage. This project integrates Facebook's Webhook, AWS API Gateway, Lambda, Kinesis, SQS, and S3.
 
 ---
+###  **Problems**
+
+The restaurant faces significant inefficiencies in its order management process:
+
+1. **Customer Communication Burden** – Staff must be online 24/7 on the Facebook Fanpage Messenger to respond to customer inquiries, which is resource-intensive and difficult to maintain.
+
+2. **Manual Order Processing** – Orders are manually collected from chat messages and recorded into Excel by an admin, consuming time and effort.
+
+3. **Data Inaccuracy** – Manual data entry increases the risk of errors, leading to incorrect order records, reporting issues, and operational delays.
+
+4. **Time Wastage** – The current workflow slows down order processing and creates unnecessary bottlenecks between customers, the admin, and the chef.
+
+---
+
 
 ### **Main Architecture**
 ![Scaling Data Architecture](streaming_architecture.png)
